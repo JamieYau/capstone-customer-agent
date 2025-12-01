@@ -1,0 +1,14 @@
+[
+  {
+    "question": "What are your delivery times?",
+    "answer": "Delivery usually takes 2-4 business days."
+  },
+  {
+    "question": "What is your refund policy?",
+    "answer": "You can request a refund within 30 days of purchase."
+  },
+  {
+    "question": "How can I cancel my order?",
+    "answer": "Orders can be cancelled within the first 12 hours of purchase."
+  }
+]
