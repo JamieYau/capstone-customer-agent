@@ -1,32 +1,35 @@
-# app/agent/workflow.py
 from langgraph.graph import StateGraph, END
+
 from app.agent.intent_classifier import classify_intent
 from app.tools.order_lookup import lookup_order
 from app.tools.faq_retriever import retrieve_faq_answer
+from app.agent.response_generator import (
+    generate_order_response,
+    generate_faq_response,
+    generate_unknown_response
+)
 
 
 def build_graph():
 
     def node_classify(state):
-        res = classify_intent(state["user_input"])
-        state["intent"] = res.intent
-        state["order_id"] = res.order_id
+        result = classify_intent(state["user_input"])
+        state["intent"] = result.intent
+        state["order_id"] = result.order_id
         return state
 
     def node_order(state):
-        order_id = state.get("order_id")
-        state["result"] = lookup_order(order_id)
+        raw = lookup_order(state.get("order_id"))
+        state["result"] = generate_order_response(raw)
         return state
 
     def node_faq(state):
-        state["result"] = retrieve_faq_answer(state["user_input"])
+        raw_answer = retrieve_faq_answer(state["user_input"])
+        state["result"] = generate_faq_response(raw_answer)
         return state
 
     def node_unknown(state):
-        state["result"] = (
-            "I'm not sure what you meant. "
-            "You can ask about orders, delivery, returns, or store policy."
-        )
+        state["result"] = generate_unknown_response()
         return state
 
     graph = StateGraph(dict)
@@ -45,7 +48,7 @@ def build_graph():
             "order_tracking": "order",
             "faq": "faq",
             "policy": "faq",
-            "unknown": "unknown",
+            "unknown": "unknown"
         }
     )
 
