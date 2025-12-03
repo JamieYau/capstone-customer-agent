@@ -1,10 +1,14 @@
-def classify_intent(user_input):
-    user_input = user_input.lower()
+from app.common.llm import LLMClient
+from app.common.prompts import render_template
+from app.schemas.intent import IntentResult
 
-    if "order" in user_input or "track" in user_input:
-        return "order_tracking"
+def classify_intent(user_input: str) -> IntentResult:
+    client = LLMClient()
 
-    if "return" in user_input or "refund" in user_input or "cancel" in user_input:
-        return "policy"
+    prompt = render_template("intent_classifier.j2", user_input=user_input)
 
-    return "faq"
+    messages = [
+        {"role": "user", "content": prompt}
+    ]
+
+    return client.run_structured(messages, IntentResult)
