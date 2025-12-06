@@ -11,3 +11,15 @@ wheels/
 
 .env
 .idea
+
+# ChromaDB files
+db/chroma/
+.chromadb/
+chroma.sqlite3
+chroma-embeddings.parquet
+
+# Vector store caches
+*.faiss
+*.pkl
+*.bin
+*.index
