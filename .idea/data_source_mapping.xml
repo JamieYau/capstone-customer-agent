@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="DataSourcePerFileMappings">
-    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/8a302cd5-1f35-4fdf-bc86-6d3988c42b56/console.sql" value="8a302cd5-1f35-4fdf-bc86-6d3988c42b56" />
-    <file url="file://$PROJECT_DIR$/app/data/create_orders_db.py" value="8a302cd5-1f35-4fdf-bc86-6d3988c42b56" />
-  </component>
-</project>
