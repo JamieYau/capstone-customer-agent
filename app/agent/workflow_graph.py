@@ -12,11 +12,11 @@ from app.agent.response_generator import (
 
 
 def build_graph():
-    @traceable(name="intent_classification_node")
     def node_classify(state):
         result = classify_intent(state["user_input"])
         state["intent"] = result.intent
         state["order_id"] = result.order_id
+        state["confidence"] = result.confidence
         return state
 
     @traceable(name="order_tracking_node")

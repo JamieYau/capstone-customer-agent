@@ -1,5 +1,4 @@
 from app.common.prompts import render_template
-from app.common.llm import LLMClient
 
 
 def generate_order_response(order):
