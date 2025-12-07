@@ -1,4 +1,5 @@
 from langgraph.graph import StateGraph, END
+from langsmith import traceable
 
 from app.agent.intent_classifier import classify_intent
 from app.tools.order_lookup import lookup_order
@@ -11,23 +12,26 @@ from app.agent.response_generator import (
 
 
 def build_graph():
-
+    @traceable(name="intent_classification_node")
     def node_classify(state):
         result = classify_intent(state["user_input"])
         state["intent"] = result.intent
         state["order_id"] = result.order_id
         return state
 
+    @traceable(name="order_tracking_node")
     def node_order(state):
         raw = lookup_order(state.get("order_id"))
         state["result"] = generate_order_response(raw)
         return state
 
+    @traceable(name="faq_tracking_node")
     def node_faq(state):
         raw_answer = retrieve_faq_answer(state["user_input"])
         state["result"] = generate_faq_response(raw_answer)
         return state
 
+    @traceable(name="unknown_tracking_node")
     def node_unknown(state):
         state["result"] = generate_unknown_response()
         return state

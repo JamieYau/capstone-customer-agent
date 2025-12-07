@@ -4,6 +4,7 @@ from typing import List, Dict, Literal
 from pydantic import BaseModel, ValidationError
 from dotenv import load_dotenv
 from openai import OpenAI
+from langsmith import traceable
 
 load_dotenv()
 
@@ -50,6 +51,10 @@ class LLMClient:
 
         return r.json().get("message", {}).get("content", "")
 
+    @traceable(
+        name="llm_chat_json",
+        metadata={"component": "llm_client"}
+    )
     def chat_json(self, messages, temperature=0.2):
         if self.provider == "openai":
             return self._openai_chat(messages, temperature)
